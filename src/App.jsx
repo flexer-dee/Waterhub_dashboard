@@ -54,46 +54,27 @@ export default function App() {
   const fetchLocalizedHydrologyData = async (hub) => {
     setLoading(true);
     try {
-      // NOTE: This represents the structure for the ICPAC East Africa Hazards Watch API.
-      // You would replace 'wrf_rainfall_layer_id' with the actual live layer ID from ICPAC.
-      /*
-      const response = await fetch(`https://eahazardswatch.icpac.net/api/raster-data/pixel/{wrf_rainfall_layer_id}?lon=${hub.lon}&lat=${hub.lat}`);
-      const apiData = await response.json();
-      */
+      const response = await fetch(`http://127.0.0.1:8000/api/predict-runoff?lat=${hub.lat}&lon=${hub.lon}`);
+      const mlData = await response.json();
+      
+      const runoffDepthMm = calculateRunoff(mlData.ann_corrected_rainfall_mm, hub.curveNumber);
+      const inflowLiters = Math.round(runoffDepthMm * hub.catchmentArea);
+      const days = calculateDaysOfReserve(hub.currentTankLiters, inflowLiters, hub.dailyConsumption);
 
-      // Simulated 24-hour API response for demonstration
-      const simulatedForecast = Array.from({ length: 8 }, (_, i) => ({
-        time: `${(i * 3).toString().padStart(2, '0')}:00`,
-        precipitationMm: Math.random() > 0.5? Math.random() * 15 : 0 
+      // Create a 24-hour simulation for the chart
+      const chartData = Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}:00`,
+        projectedInflowLiters: Math.round(inflowLiters * (Math.random() * 0.1 + 0.9)) // Simulated distribution
       }));
 
-      let totalRunoffLiters = 0;
-      
-      const processedForecast = simulatedForecast.map(interval => {
-        // 1. Calculate the direct runoff depth in mm using the SCS-CN algorithm
-        const runoffDepthMm = calculateRunoff(interval.precipitationMm, hub.curveNumber);
-        
-        // 2. Convert depth to volume (1 mm over 1 sq meter = 1 Liter)
-        const inflowLiters = Math.round(runoffDepthMm * hub.catchmentArea);
-        totalRunoffLiters += inflowLiters;
-
-        return {
-          time: interval.time,
-          projectedInflowLiters: inflowLiters
-        };
-      });
-
-      // 3. Calculate the critical "Days of Reserve" metric
-      const days = calculateDaysOfReserve(hub.currentTankLiters, totalRunoffLiters, hub.dailyConsumption);
-
       setWaterMetrics({
-        projectedRunoff: totalRunoffLiters,
+        projectedRunoff: inflowLiters,
         daysRemaining: days,
-        forecastChartData: processedForecast
+        forecastChartData: chartData // Now the chart has data to render
       });
 
     } catch (error) {
-      console.error("Error fetching hydro-meteorological data:", error);
+      console.error("Error fetching Neural Network data:", error);
     } finally {
       setLoading(false);
     }
