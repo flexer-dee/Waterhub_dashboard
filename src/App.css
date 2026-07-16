@@ -1,0 +1,272 @@
+/* =========================================
+   RESET & BASE STYLES
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================
+   APP CONTAINER & DYNAMIC BACKGROUNDS
+   ========================================= */
+.app {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+  transition: background-image 0.8s ease-in-out;
+}
+
+/* Base states for demo (Ensure you have these images in /src/assets/ or replace with solid colors) */
+.app.bg-landing { background-image: url('./assets/landing page.jpg'); background-color: #1a1a2e; }
+.app.bg-weather-clear-day { background-image: url('./assets/clear day.jpg'); background-color: #4a90e2; }
+.app.bg-weather-rain-day { background-image: url('./assets/rain day.jpg'); background-color: #2c3e50; }
+
+/* =========================================
+   MAIN OVERLAY
+   ========================================= */
+main {
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+  padding: 40px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================================
+   NAVIGATION & TOGGLES
+   ========================================= */
+.toggle-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.toggle-btn {
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* =========================================
+   LANDING PAGE WELCOME TEXT
+   ========================================= */
+.landing-welcome {
+  text-align: center;
+  color: white;
+  margin-top: 10vh;
+}
+
+.landing-welcome h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: -1px;
+  line-height: 1.2;
+}
+
+/* =========================================
+   LIVE TELEMETRY DATA DISPLAY
+   ========================================= */
+.weather-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.location-box {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.location-box.location {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.location-box.date {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-top: 5px;
+}
+
+/* =========================================
+   MAIN METRIC WIDGET
+   ========================================= */
+.weather-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(15px);
+  width: 100%;
+  max-width: 450px;
+  margin-bottom: 20px;
+}
+
+.weather-box.temp {
+  color: #fff;
+  font-size: 5.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -3px;
+  margin-bottom: 10px;
+}
+
+.weather-box.weather-condition {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   EXTRA DETAILS PANEL
+   ========================================= */
+.extra-details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px 30px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+.detail span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.7;
+}
+
+.detail strong {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/* =========================================
+   ALERTS & CHARTS
+   ========================================= */
+.alert-banner {
+  background-color: rgba(239, 68, 68, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 25px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.chart-container h3 {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 220px;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 600px) {
+ .landing-welcome h1 {
+    font-size: 2.2rem;
+  }
+ .weather-box.temp {
+    font-size: 4rem;
+  }
+ .weather-box {
+    padding: 25px 20px;
+  }
+ .weather-box.weather-condition {
+    font-size: 1.2rem;
+  }
+ .extra-details {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
